@@ -2,10 +2,19 @@ clear;
 close all;
 clc;
 
-tic;
-%addpath('hw3data');
-%addpath('hw3data/training set');
-[trainImgs,trainLabels] = readMNIST('train-images-idx3-ubyte','train-labels-idx1-ubyte',20000,0);
-%addpath('hw3data/test set');
-[testImgs,testLabels] = readMNIST('t10k-images-idx3-ubyte','t10k-labels-idx1-ubyte',10000,0);
-toc;
+% Ouvrez le fichier de données d'images
+fid = fopen('train-images-idx3-ubyte','r');
+
+% Lisez les en-têtes du fichier
+magic = fread(fid,1,'int32',0,'ieee-be');
+numImages = fread(fid,1,'int32',0,'ieee-be');
+numRows = fread(fid,1,'int32',0,'ieee-be');
+numCols = fread(fid,1,'int32',0,'ieee-be');
+
+% Lisez les données d'images
+images = fread(fid,inf,'unsigned char');
+images = reshape(images,numCols,numRows,numImages);
+images = permute(images,[2 1 3]);
+
+% Fermez le fichier
+fclose(fid);
