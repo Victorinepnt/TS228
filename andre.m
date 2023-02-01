@@ -18,3 +18,6 @@ images = permute(images,[2 1 3]);
 
 % Fermez le fichier
 fclose(fid);
+
+
+%Initialisation
