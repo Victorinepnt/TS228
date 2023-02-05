@@ -1,47 +1,20 @@
-clear;
-close all;
+clear,
+close all,
 clc;
-% 
-% % Ouvrez le fichier de données d'images
-% fid = fopen('train-images-idx3-ubyte','r');
-% 
-% % Lisez les en-têtes du fichier
-% magic = fread(fid,1,'int32',0,'ieee-be');
-% numImages = fread(fid,1,'int32',0,'ieee-be');
-% numRows = fread(fid,1,'int32',0,'ieee-be');
-% numCols = fread(fid,1,'int32',0,'ieee-be');
-% 
-% % Lisez les données d'images
-% images = fread(fid,inf,'unsigned char');
-% images = reshape(images,numCols,numRows,numImages);
-% images = permute(images,[2 1 3]);
-% 
-% % Fermez le fichier
-% fclose(fid);
-% 
-% 
-% % Ouvrez le fichier de données d'images
-% fid2 = fopen('train-labels-idx1-ubyte','r');
-% 
-% % Lisez les en-têtes du fichier
-% magic2 = fread(fid2,1,'int32',0,'ieee-be');
-% numimage2=fread(fid2,1,'int32',0,'ieee-be');
-% 
-% % Lisez les données d'images
-% train_label = fread(fid2,inf,'unsigned char');
-% 
-% % Fermez le fichier
-% fclose(fid2);
 
+%Récupération de la base de données
+iris_data=iris_dataset;
+iris_data=iris_data(:,1:100);
+iris_species= [zeros(51,1);ones(49,1)]';
 
 
 %Initialisation
 d = 28; %d = 784
 N = 28; %N = 20000
-N_test = size(images,1); %N_test = 10000
+N_test = size(iris_data,1); %N_test = 10000
 c=10;               %Définir qui 
 T=250;              %Définir qui
-N = size(images,1); %Nombre d'images
+N = size(iris_data,1); %Nombre d'images
 t=[-1 1];           %Cible
 w=zeros(10,N);      %Poids
 w(:,1)=1/N;         %Initialisation du premier poids
@@ -72,11 +45,11 @@ for it = 1:T
         gk = g(k,:);
         gk_test = g_test(k,:);
         wl = it;
-        jBest = Alf(k,1,wl);
-        uBest = Alf(k,2,wl);
-        xj = X(jBest,:); %1x20000
-        xj_test = X_test(jBest,:); %1x10000
-        
+        jBest = alpha(k,1,wl);
+        uBest = alpha(k,2,wl);
+        iris_data = X(jBest,:); %1x20000
+        xj_test = X_test(jBest,:); %1x10000    Chercher ce par quoi on doi
+         
         %update the learned function
         if uBest <= 51
             n = uBest - 1;
